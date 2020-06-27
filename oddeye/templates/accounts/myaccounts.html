@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+{% block title %}
+My Page
+{% endblock title %}
+
+{% block content%}
+{% load static %}
+<style>
+    .products_list .default-img{border-radius: 1000px;}
+    .products_list .hover-img{border-radius: 1000px;}
+    .modal-dialog{margin: 2% auto ;}
+    .products_list .item {float: left; width: 30%; margin-left:10px; margin-right:10px;}
+    .prod_to_style {margin:50px 50px 20px 50px;}
+    .prod_to_style div { margin-bottom:20px;}
+</style>
+
+<!--content-->
+<div class="shop-area pt-50 pb-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9">
+                <div class="tab-content jump">
+                    <div id="shop-1" class="tab-pane active">
+                        <h2>{{username}}님의 MY PAGE</h2>
+                        <h3 class="pro-sidebar-title mt-50">WISH LIST </h3>
+                        <div class="row">
+                            {% for item in data %}
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-16">
+                                <div class="product-wrap-3 mb-20 scroll-zoom">
+                                    <div class="product-img">
+                                        <a href="#" data-toggle="modal" data-target="#exampleModal{{item.PRODUCT_ID}}" ><img src="{{item.IMG_URL}}"></a>
+                                        {% if item.discounts %}
+                                        <span class="pink">-{{item.discounts}}%</span>
+                                        {% endif %}
+                                        <div class="product-content-3-wrap">
+                                            <div class="product-content-3">
+                                                <div class="product-title">
+                                                    <h3><a href="{{item.PRODUCT_NAME}}" data-toggle="modal" data-target="#exampleModal{{item.PRODUCT_ID}}">{{item.PRODUCT_NAME}}</a></h3>
+                                                </div>
+                                                {% if item.PRICE_DISCOUNT != None%}
+                                                <div class="price-3">
+                                                    <span>₩ {{item.PRICE_DISCOUNT}}</span>
+                                                    <span class="old">₩{{item.PRICE_ORIGINAL}}</span>
+                                                </div>
+
+                                                {% else %}
+                                                <div class="price-3">
+                                                    <span>₩ {{item.PRICE_ORIGINAL}}</span>
+                                                </div>
+                                                {% endif %}
+                                                <div class="product-action-3 wishlist" name="{{item.PRODUCT_ID}}">
+                                                    <a title="Add To Wishlist" href="#"><i class="fa fa-heart"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="sidebar-style ml-30">
+                    <div class="sidebar-widget">
+                    </div>
+                    <div class="sidebar-widget">
+                        <div class="sidebar-widget mt-50">
+                            <h3 class="pro-sidebar-title">FOLLOWING </h3>
+                            <div class="sidebar-widget-tag mt-25">
+                                <ul>
+                                    {%for f in follow %}
+                                    <a href="/styles/details/{{f|slice:':-2'}}/{{f|slice:'-1:'}}">
+                                        <img class="circular--square" src='/static/star/{{f|slice:":-2"}}/thumb/{{f|slice:"-1:"}}.jpg' width="200px">
+                                    </a>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--modal start-->
+{% for item in data %}
+<div class="modal fade" id="exampleModal{{item.PRODUCT_ID}}" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>상품 상세보기</span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 col-xs-12">
+                            <div class="tab-content quickview-big-img">
+                                <div id="pro-2" class="tab-pane fade show active">
+                                    <img src="{{ item.IMG_URL }}" alt="">
+                                </div>
+                            </div>
+                            <!-- Thumbnail Large Image End -->
+                            <!-- Thumbnail Image End -->
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-xs-12">
+                            <div class="product-details-content quickview-content">
+                                <h2>{{item.PRODUCT_NAME}}</h2>
+                                <div class="product-details-price">
+                                    {% if item.PRICE_DISCOUNT != None %}
+                                    <span>₩ {{item.PRICE_DISCOUNT}}</span>
+                                    <span class="old">₩{{item.PRICE_ORIGINAL}}</span>
+
+                                    {% else %}
+                                    <span>₩ {{item.PRICE_ORIGINAL}}</span>
+                                    {% endif %}
+                                </div>
+                                <div class="pro-details-quality">
+                                    <div class="pro-details-cart btn-hover">
+                                        <a href="{{item.PRODUCT_URL}}">구매하러가기</a>
+                                    </div>
+                                    <div class="pro-details-wishlist">
+                                        <a href="#"><i class="fa fa-heart-o"></i></a>
+                                    </div>
+                                </div>
+                                <div class="pro-details-meta">
+                                    <span>Tag :</span>
+                                    <ul>
+                                        <li><a href="#"># Fashion </a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row prod_to_style">
+                        {% for e in emb %}
+                        {% if item.PRODUCT_ID == e.product_id %}
+                        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-16"><img class="circular--square" src="/static/star/{{e.likely.0}}.jpg" width="200px"></div>
+                        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-16"><img class="circular--square" src="/static/star/{{e.likely.1}}.jpg" width="200px"></div>
+                        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-16"><img class="circular--square" src="/static/star/{{e.likely.2}}.jpg" width="200px"></div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}
+
+{% block jsfooter %}
+<!--<script src="https://code.jquery.com/jquery-latest.js"></script>-->
+<script>
+    $(document).ready(function(){
+        $('.wishlist').click(function(){
+            var getpk = $(this).attr('name');
+
+            $.ajax({
+                type: "POST",
+                url: "/products/"+getpk,
+                data: {'pk': getpk, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                dataType: "json",
+
+                success: function (response) {
+                    // id = $(this).attr('name');
+                    // $('#count'+ pk).html("count : "+ response.likes_count);
+                    // alert("좋아요수 :" + response.likes_count);
+                    // alert(response.message);
+                    location.reload();
+                },
+                error: function (request, status, error) {
+                    console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error + "\n")
+                }
+            });
+        })
+    });
+
+</script>
+{% endblock %}

@@ -1,0 +1,290 @@
+<style>
+    .owl-carousel {
+        position: relative;
+        width: 440 !important;
+        height: 440;
+        margin: 50 0 100 0 ;
+    }
+    
+    @media only screen and (min-width: 768px) {
+        .owl-stage {
+            transform: none !important;
+            width: 440 !important;
+        }
+
+        .owl-carousel .owl-stage-outer {
+            width: 110%;
+            overflow: visible !important;
+        }
+
+        .owl-carousel .owl-item img {
+            width: 200 !important;
+            display: inline-grid;
+            float: none;
+        }
+    }
+</style>
+
+{% extends "base.html" %}
+
+{% block title %}
+style-detail
+{% endblock title %}
+
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="shop-area pb-50 row">
+        <!-- 선택된 이미지 크게 -->
+        <div class="selected col-sm-4 col-lg-4 sidebar-active sidebar-active-left">
+            <div class="row">
+                <div class="col">
+                    <div id="selected_thumbnail" class="product-details">
+                        <img width="300px" id="star_thumb" class="circular--square star_large" src='{% static "" %}star/{{star_name}}/thumb/{{pk}}.jpg'>
+                    </div>
+                </div>
+                <div class="col"></div>
+            </div>
+            <div class="row">
+                <div class="col pt-30">
+                    <div class="product-details-content" style="width: 100%;text-align: center;">
+                        <h2>{{star_name|upper}}</h2>
+                        <div class="icon_heart">
+                            <a href="#" id="1" name="17" class="icons likey"  data-toggle="tooltip" data-placement="bottom" title="Follow">
+                                {% if cklike == True %}
+                                <i class="fa fa-heart fa-lg"></i>
+                                {% else %}
+                                <i class="fa fa-heart-o icon-default fa-lg"></i>
+                                <i class="fa fa-heart icon-hover fa-lg"></i>
+                                {% endif %}
+                            </a>
+                        </div>
+                        <div class="inline_block_count">{{ total_cnt }}</div><br>
+                        <div class="pro-details-meta inline_block_tag">
+                            <span class="inline_block">TAGS :</span>
+                            <ul class="inline_block">
+                                <li><a href="#"> {{styles.0.TAG}} </a></li>
+                                <li><a href="#"> {{styles.1.TAG}} </a></li>
+                                <li><a href="#"> {{styles.2.TAG}} </a></li>
+                                <li><a href="#"> {{styles.3.TAG}} </a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-30 mb-30">
+                <div class="col-lg-3 col-xs-6">
+                    <a href="/styles/details/{{star_name}}/{{styles.0.STYLE}}">
+                        <img id="01" name="{{ styles.NO }}" class="circular--square star_small" src='{% static "" %}star/{{star_name}}/thumb/{{styles.0.STYLE}}.jpg'></a>
+                </div>
+                <div class="col-lg-3 col-xs-6">
+                    <a href="/styles/details/{{star_name}}/{{styles.1.STYLE}}">
+                        <img id="02" name="{{ styles.NO }}" class="circular--square star_small" src='{% static "" %}star/{{star_name}}/thumb/{{styles.1.STYLE}}.jpg'></a>
+                </div>
+                <div class="col-lg-3 col-xs-6">
+                    <a href="/styles/details/{{star_name}}/{{styles.2.STYLE}}">
+                        <img id="03" name="{{ styles.NO }}" class="circular--square star_small" src='{% static "" %}star/{{star_name}}/thumb/{{styles.2.STYLE}}.jpg'></a>
+                </div>
+                <div class="col-lg-3 col-xs-6">
+                    <a href="/styles/details/{{star_name}}/{{styles.3.STYLE}}">
+                        <img id="04" name="{{ styles.NO }}" class="circular--square star_small" src='{% static "" %}star/{{star_name}}/thumb/{{styles.3.STYLE}}.jpg'></a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col"></div>
+        <div class="col-lg-7 pt-50">
+            <!--SECTION2: Related Products -->
+            <div class="related-product-area pb-95">
+                <div class="section-title text-center mb-20">
+                    <h2>Related products</h2> <br>
+                    <!--                    <h2 class='jquery_test'> {{style_no}}</h2>-->
+                </div>
+                <div class="product-area hm5-section-padding pt-20 pb-20">
+                    <div class="row">
+                        {% for d in dist %}
+                        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
+                            <div class="product-wrap-3 mb-20 scroll-zoom">
+                                <div class="product-img">
+                                    <a href="#" data-toggle="modal" data-target="#exampleModal{{d.product_id}}" ><img src={{d.img_url}} alt=""></a>
+                                    {% if d.discounts %}
+                                    <span class="pink">-{{d.discounts}}%</span>
+                                    {% endif %}
+                                    <div class="product-content-3-wrap">
+                                        <div class="product-content-3">
+                                            <div class="product-title">
+                                                <h3><a href="{{d.product_name}}" data-toggle="modal" data-target="#exampleModal{{d.product_id}}">{{d.product_name}}</a></h3>
+                                            </div>
+                                            {% if d.price_discount != None%}
+                                            <div class="price-3">
+                                                <span>₩ {{d.price_discount}}</span>
+                                                <span class="old">₩{{d.price_original}}</span>
+                                            </div>
+
+                                            {% else %}
+                                            <div class="price-3">
+                                                <span>₩ {{d.price_original}}</span>
+                                            </div>
+                                            {% endif %}
+                                            <div class="product-action-3 wishlist" name="{{d.product_id}}">
+                                                <a title="Add To Wishlist" href="#"><i class="fa fa-heart"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal start-->
+{% for d in dist %}
+<div class="modal fade" id="exampleModal{{d.product_id}}" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>상품 상세보기</span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 col-xs-12">
+                            <div class="tab-content quickview-big-img">
+                                <div id="pro-2" class="tab-pane fade show active">
+                                    <img src="{{ d.img_url }}" alt="">
+                                </div>
+                            </div>
+                            <!-- Thumbnail Large Image End -->
+                            <!-- Thumbnail Image End -->
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-xs-12">
+                            <div class="product-details-content quickview-content">
+                                <h2>{{d.product_name}}</h2>
+                                <div class="product-details-price">
+                                    {% if d.price_discount != None%}
+                                    <span>₩ {{d.price_discount}}</span>
+                                    <span class="old">₩{{d.price_original}}</span>
+                                    {% else %}
+                                    <span>₩ {{d.price_original}}</span>
+                                    {% endif %}
+                                </div>
+                                <div class="pro-details-quality">
+                                    <div class="pro-details-cart btn-hover">
+                                        <a href="{{d.product_url}}">구매하러가기</a>
+                                    </div>
+<!--                                    <div class="pro-details-wishlist">-->
+<!--                                        <a href="#"><i class="fa fa-heart-o"></i></a>-->
+<!--                                    </div>-->
+                                </div>
+                                <div class="pro-details-meta">
+                                    <span>Tag :</span>
+                                    <ul>
+                                        <li><a href="#"># Fashion </a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+<!-- Modal end -->
+
+
+
+{% endblock %}
+
+{% block jsfooter %}
+
+<script src="{% static 'js/vendor/modernizr-2.8.3.min.js' %}"></script>
+<script>
+    $(document).ready(function(){
+        //캐로셀
+        $('#style_carousel').owlCarousel({
+            loop: true,
+            nav: true,
+            autoplay: false,
+            autoplayTimeout: 5000,
+            animateOut: 'fadeOut',
+            animateIn: 'fadeIn',
+            navText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'],
+            item: 4,
+            margin: 30,
+            responsive: {
+                0: {
+                    items: 1
+                },
+                768: {
+                    items: 2
+                },
+                1000: {
+                    items: 4
+                }
+            }
+        });
+        //현재 style num 가져오기
+
+
+        //style 마우스 오버 시 썸네일 바뀜 + 마우스 리브 시 썸네일 돌아옴 <-- 마우스리브 아직 못 함
+        // $('.other_styles a img').mouseover(function(){
+        //     var go = $(this).attr('src');
+        //     $('#star_thumb').attr('src', go);
+        // });
+    
+        //style 클릭 시 썸네일 바뀌는 효과
+        $('.other_styles a img').click(function(){
+            var go = $(this).attr('src')
+            $('#star_thumb').fadeOut(100, function(){
+                $('#star_thumb').attr('src', go).fadeIn(200);
+                return false;
+            });
+
+            // var myurl = '/details/' + {{star.NAME}} + {{star.STYLE}};
+            // $(location).attr('href',myurl);
+        });
+    
+        $('.other_styles a img').click(function(){
+            var star_id = $(this).attr('id');
+            var param = {star_id:star_id};
+            $(".jquery_test").text(star_id);
+        });
+
+        $('.likey').click(function(){
+            // var pk = $(this).attr('name');
+            var pk={{pk}}
+            var style_num = $(this).attr('id');
+            var star_name = '{{star_name}}';
+
+            $.ajax({
+                type: "POST",
+                url: "{% url 'styles:detail_styles' star_name  %}",
+                data: {'pk': pk, 'star_name':star_name, 'style':style_num, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                dataType: "json",
+
+                success: function (response) {
+                    // id = $(this).attr('name');
+                    // $('#count'+ pk).html("count : "+ response.likes_count);
+                    // alert("좋아요수 :" + response.likes_count);
+                    // alert(response.message);
+                    location.reload();
+                },
+                error: function (request, status, error) {
+                    console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error + "\n")
+                }
+            });
+        })
+    });
+
+</script>
+{% endblock jsfooter %}
